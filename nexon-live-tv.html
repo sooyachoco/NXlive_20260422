@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXON Live TV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            /* Nexon Basic 1.0v — Basic Color (Gray) */
+            bc: {
+              100: 'var(--bc100)', 200: 'var(--bc200)', 300: 'var(--bc300)',
+              400: 'var(--bc400)', 500: 'var(--bc500)', 600: 'var(--bc600)',
+              700: 'var(--bc700)', 800: 'var(--bc800)', 900: 'var(--bc900)',
+              1000: 'var(--bc1000)',
+            },
+            /* Nexon Basic 1.0v — Point Color (Blue) */
+            pc: {
+              100: '#ECF1F9', 200: '#CCE2FF', 300: '#B8D7FF',
+              400: '#8FBFFF', 500: '#6BABFF', 600: '#57A0FF',
+              700: '#3D91FF', 800: '#0A74FF', 900: '#0056C7',
+              1000: '#1E4B85',
+            },
+            /* Semantic aliases */
+            'nx-red': '#E81F3E',
+            'surface': 'var(--surface)',
+            'surface2': 'var(--surface2)',
+            'surface-card': 'var(--surface-card)',
+            'surface-card-h': 'var(--surface-card-h)',
+            'on-surface': 'var(--on-surface)',
+            'on-surface2': 'var(--on-surface2)',
+            'on-surface3': 'var(--on-surface3)',
+            'on-surface4': 'var(--on-surface4)',
+            'divider': 'var(--divider)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Nexon Basic 1.0v Token Variables ─── */
+    :root {
+      --bc100: #E8EBF2; --bc200: #D2D6E0; --bc300: #C6CCD7;
+      --bc400: #B1B7C4; --bc500: #A1A7B5; --bc600: #8F96A3;
+      --bc700: #747A86; --bc800: #51555D; --bc900: #3D4148;
+      --bc1000: #17191C;
+    }
+
+    /* ─── Dark Mode (default) ─── */
+    [data-theme="dark"] {
+      --surface: #17191C;       /* BC1000 */
+      --surface2: #1E2025;      /* BC1000 lighter */
+      --surface-card: rgba(255,255,255,0.04);
+      --surface-card-h: rgba(255,255,255,0.08);
+      --on-surface: #FFFFFF;
+      --on-surface2: #A1A7B5;   /* BC500 */
+      --on-surface3: #747A86;   /* BC700 */
+      --on-surface4: #51555D;   /* BC800 */
+      --divider: #3D4148;       /* BC900 */
+      --hero-from: #1a1040; --hero-via: #0f1a33; --hero-to: #0c1220;
+      color-scheme: dark;
+    }
+
+    /* ─── Light Mode ─── */
+    [data-theme="light"] {
+      --surface: #FFFFFF;
+      --surface2: #F3F5F9;      /* near BC100 */
+      --surface-card: rgba(0,0,0,0.03);
+      --surface-card-h: rgba(0,0,0,0.06);
+      --on-surface: #17191C;    /* BC1000 */
+      --on-surface2: #51555D;   /* BC800 */
+      --on-surface3: #8F96A3;   /* BC600 */
+      --on-surface4: #B1B7C4;   /* BC400 */
+      --divider: #E8EBF2;       /* BC100 */
+      --hero-from: #2a1a60; --hero-via: #1a2a55; --hero-to: #152240;
+      color-scheme: light;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: 'Noto Sans KR', system-ui, sans-serif;
+      letter-spacing: -0.35px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .hide-sb::-webkit-scrollbar { display: none; }
+    .hide-sb { -ms-overflow-style: none; scrollbar-width: none; }
+    .lc2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* Theme toggle button */
+    .theme-toggle {
+      position: relative; width: 44px; height: 24px;
+      border-radius: 12px; border: none; cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .theme-toggle .knob {
+      position: absolute; top: 2px; left: 2px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #fff; transition: transform 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+    .theme-toggle.is-light .knob { transform: translateX(20px); }
+
+    /* Smooth transitions for themed elements */
+    header, footer, section, div, a, button, span, p, h1, h2, h3 {
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- ═══ HEADER ═══ -->
+  <header class="sticky top-0 z-50 bg-surface/95 backdrop-blur-md border-b border-divider">
+    <div class="max-w-[1440px] mx-auto flex items-center justify-between h-16 px-6 lg:px-20">
+      <div class="flex items-center gap-10">
+        <a href="#" class="flex items-center gap-1.5 shrink-0">
+          <span class="text-xl font-bold tracking-tight text-on-surface">NEXON</span>
+          <span class="bg-nx-red text-[10px] font-bold px-1.5 py-0.5 rounded text-white">LIVE</span>
+          <span class="text-xl font-bold tracking-tight text-on-surface">TV</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-7" id="nav">
+          <button class="text-[15px] text-on-surface font-semibold nav-btn" data-active="true">홈</button>
+          <button class="text-[15px] text-on-surface3 hover:text-on-surface transition-colors nav-btn">라이브</button>
+          <button class="text-[15px] text-on-surface3 hover:text-on-surface transition-colors nav-btn">VOD</button>
+          <button class="text-[15px] text-on-surface3 hover:text-on-surface transition-colors nav-btn">게임별</button>
+          <button class="text-[15px] text-on-surface3 hover:text-on-surface transition-colors nav-btn">스케줄</button>
+        </nav>
+      </div>
+      <div class="flex items-center gap-5">
+        <!-- Theme Toggle -->
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-on-surface3" id="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <button class="theme-toggle" id="theme-toggle" aria-label="테마 전환"><span class="knob"></span></button>
+          <svg class="w-4 h-4 text-on-surface3" id="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
+        <div class="w-px h-5 bg-divider"></div>
+        <!-- Icons -->
+        <button class="text-on-surface3 hover:text-on-surface transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="text-on-surface3 hover:text-on-surface transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <button class="text-on-surface3 hover:text-on-surface transition-colors">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="max-w-[1440px] mx-auto flex flex-col lg:flex-row">
+    <div class="relative flex-1 aspect-video lg:aspect-auto lg:h-[560px] overflow-hidden group cursor-pointer" style="background: linear-gradient(135deg, var(--hero-from), var(--hero-via), var(--hero-to))">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-[72px] h-[72px] rounded-full border-2 border-white/40 bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 group-hover:scale-110 transition-all">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+      </div>
+      <div class="absolute top-6 left-6 flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 bg-nx-red px-2.5 py-1 rounded text-xs font-bold text-white"><span class="w-2 h-2 rounded-full bg-white"></span>LIVE</span>
+        <span class="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm rounded px-2.5 py-1 text-xs text-white">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          12,847명 시청 중
+        </span>
+      </div>
+      <div class="absolute bottom-8 left-8 right-8">
+        <h1 class="text-2xl lg:text-[28px] font-bold mb-3 leading-snug text-white">메이플스토리 월드 신규 업데이트 기념 특별 라이브</h1>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-pc-800 shrink-0"></div>
+          <span class="text-[15px] font-medium text-white/90">넥슨 공식채널</span>
+          <span class="bg-white/[0.12] rounded px-2 py-0.5 text-xs text-white/80">메이플스토리</span>
+        </div>
+      </div>
+    </div>
+    <div class="lg:w-[400px] bg-surface2 p-5 flex flex-col">
+      <h3 class="font-bold text-base mb-4 text-on-surface">지금 인기 라이브</h3>
+      <div class="flex flex-col gap-3 flex-1" id="sidebar-streams"></div>
+    </div>
+  </section>
+
+  <!-- ═══ LIVE NOW ═══ -->
+  <section class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-12 pb-4">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[22px] font-bold flex items-center gap-2 text-on-surface"><span>🔴</span> 지금 라이브 중</h2>
+      <button class="flex items-center gap-1 text-on-surface3 text-sm hover:text-on-surface transition-colors">전체보기 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="live-cards"></div>
+  </section>
+
+  <!-- ═══ CATEGORY TABS ═══ -->
+  <div class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-8">
+    <div class="flex gap-0 overflow-x-auto hide-sb border-b border-divider" id="cat-tabs"></div>
+  </div>
+
+  <!-- ═══ POPULAR VOD ═══ -->
+  <section class="max-w-[1440px] mx-auto px-6 lg:px-20 pt-10 pb-4">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[22px] font-bold flex items-center gap-2 text-on-surface"><span>🎬</span> 인기 VOD</h2>
+      <button class="flex items-center gap-1 text-on-surface3 text-sm hover:text-on-surface transition-colors">전체보기 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8" id="vod-grid"></div>
+  </section>
+
+  <!-- ═══ SCHEDULE ═══ -->
+  <section class="max-w-[1440px] mx-auto px-6 lg:px-20 py-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-[22px] font-bold flex items-center gap-2 text-on-surface"><span>📅</span> 방송 스케줄</h2>
+      <button class="flex items-center gap-1 text-on-surface3 text-sm hover:text-on-surface transition-colors">전체 스케줄 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="flex gap-3 mb-8 overflow-x-auto hide-sb" id="date-selector"></div>
+    <div class="flex flex-col" id="schedule-list"></div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="border-t border-divider bg-surface2">
+    <div class="max-w-[1440px] mx-auto px-6 lg:px-20 py-12">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
+        <span class="text-lg font-bold text-on-surface4">NEXON Live TV</span>
+        <div class="flex flex-wrap gap-6">
+          <a href="#" class="text-[13px] text-on-surface4 hover:text-on-surface3 transition-colors">이용약관</a>
+          <a href="#" class="text-[13px] text-on-surface4 hover:text-on-surface3 transition-colors">개인정보처리방침</a>
+          <a href="#" class="text-[13px] text-on-surface4 hover:text-on-surface3 transition-colors">고객센터</a>
+          <a href="#" class="text-[13px] text-on-surface4 hover:text-on-surface3 transition-colors">공지사항</a>
+        </div>
+      </div>
+      <p class="text-xs text-on-surface4/60">&copy; NEXON Korea Corporation. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ═══ Theme Toggle ═══ */
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const saved = localStorage.getItem('nx-theme');
+    if (saved) html.setAttribute('data-theme', saved);
+
+    function applyToggleStyle() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      toggle.style.backgroundColor = isDark ? '#51555D' : '#0A74FF';
+      if (isDark) {
+        toggle.classList.remove('is-light');
+      } else {
+        toggle.classList.add('is-light');
+      }
+    }
+    applyToggleStyle();
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('nx-theme', next);
+      applyToggleStyle();
+    });
+
+    /* ═══ Nav Toggle ═══ */
+    document.getElementById('nav').addEventListener('click', e => {
+      if (!e.target.classList.contains('nav-btn')) return;
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('text-on-surface', 'font-semibold');
+        b.classList.add('text-on-surface3');
+      });
+      e.target.classList.remove('text-on-surface3');
+      e.target.classList.add('text-on-surface', 'font-semibold');
+    });
+
+    /* ═══ Helpers ═══ */
+    const liveBadge = (small) => `<span class="inline-flex items-center gap-1 bg-nx-red font-bold rounded text-white ${small ? 'px-1.5 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs'}"><span class="inline-block rounded-full bg-white ${small ? 'w-1.5 h-1.5' : 'w-2 h-2'}"></span>LIVE</span>`;
+    const bookmarkSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+
+    /* ═══ Sidebar Streams ═══ */
+    const sideStreams = [
+      { title: 'FC 온라인 챔피언십 2026 결승전', game: 'FC 온라인', viewers: '8,234', bg: 'from-green-900 to-green-950' },
+      { title: '던전앤파이터 시즌 특별 방송', game: '던전앤파이터', viewers: '5,102', bg: 'from-red-900 to-red-950' },
+      { title: '카트라이더: 드리프트 랭킹전', game: '카트라이더: 드리프트', viewers: '3,756', bg: 'from-blue-900 to-blue-950' },
+      { title: '바람의나라: 연 신규 콘텐츠 체험', game: '바람의나라: 연', viewers: '2,910', bg: 'from-purple-900 to-purple-950' },
+    ];
+    document.getElementById('sidebar-streams').innerHTML = sideStreams.map(s => `
+      <a href="#" class="flex items-center gap-3 p-2 rounded-lg bg-surface-card hover:bg-surface-card-h transition-colors">
+        <div class="w-[120px] h-[68px] rounded-md bg-gradient-to-br ${s.bg} shrink-0 relative overflow-hidden">
+          <span class="absolute top-1 left-1">${liveBadge(true)}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-[13px] font-semibold leading-snug lc2 mb-1 text-on-surface">${s.title}</p>
+          <p class="text-[11px] text-on-surface3 truncate">${s.game}  ·  ${s.viewers}명</p>
+        </div>
+      </a>`).join('');
+
+    /* ═══ Live Cards ═══ */
+    const streams = [
+      { title: '서든어택2 클랜전 하이라이트', streamer: 'GodJohnny', game: '서든어택2', viewers: '4,521', bg: 'from-amber-900 to-stone-950' },
+      { title: '블루 아카이브 신규 학생 공략', streamer: '블아마스터', game: '블루 아카이브', viewers: '3,208', bg: 'from-blue-900 to-indigo-950' },
+      { title: '히트2 보스레이드 공략 방송', streamer: '히트왕', game: '히트2', viewers: '2,847', bg: 'from-red-900 to-stone-950' },
+      { title: '데이브 더 다이버 신규 DLC 플레이', streamer: '민트초코', game: '데이브 더 다이버', viewers: '1,943', bg: 'from-teal-900 to-slate-950' },
+    ];
+    document.getElementById('live-cards').innerHTML = streams.map(s => `
+      <a href="#" class="group">
+        <div class="relative aspect-video rounded-xl overflow-hidden bg-gradient-to-br ${s.bg} mb-3">
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+          <div class="absolute top-2.5 left-2.5">${liveBadge(true)}</div>
+          <div class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-sm rounded px-1.5 py-0.5 text-[10px] font-medium text-white">${s.viewers}명</div>
+        </div>
+        <div class="flex gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-pc-600/40 to-pc-800/20 shrink-0 mt-0.5"></div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold leading-snug lc2 text-on-surface group-hover:text-pc-800 transition-colors">${s.title}</p>
+            <p class="text-xs text-on-surface3 mt-1 truncate">${s.streamer}  ·  ${s.game}</p>
+          </div>
+        </div>
+      </a>`).join('');
+
+    /* ═══ Category Tabs ═══ */
+    const tabs = ['전체', '메이플스토리', 'FC 온라인', '던전앤파이터', '카트라이더', '블루 아카이브', '바람의나라'];
+    const tabsEl = document.getElementById('cat-tabs');
+    tabsEl.innerHTML = tabs.map((t, i) => `
+      <button class="cat-tab relative whitespace-nowrap px-5 py-3.5 text-sm font-medium transition-colors shrink-0 ${i === 0 ? 'text-on-surface' : 'text-on-surface3 hover:text-on-surface'}" data-idx="${i}">
+        ${t}
+        ${i === 0 ? '<span class="tab-bar absolute bottom-0 left-0 right-0 h-[2px] bg-pc-800 rounded-full"></span>' : ''}
+      </button>`).join('');
+    tabsEl.addEventListener('click', e => {
+      const btn = e.target.closest('.cat-tab');
+      if (!btn) return;
+      tabsEl.querySelectorAll('.cat-tab').forEach(b => {
+        b.classList.remove('text-on-surface'); b.classList.add('text-on-surface3');
+        const bar = b.querySelector('.tab-bar'); if (bar) bar.remove();
+      });
+      btn.classList.remove('text-on-surface3'); btn.classList.add('text-on-surface');
+      btn.insertAdjacentHTML('beforeend', '<span class="tab-bar absolute bottom-0 left-0 right-0 h-[2px] bg-pc-800 rounded-full"></span>');
+    });
+
+    /* ═══ VOD Grid ═══ */
+    const vods = [
+      { title: "메이플 신규 보스 '검은 마법사' 격파 영상", channel: '넥슨 공식', views: '125,430', duration: '2:34:12', bg: 'from-violet-950 to-indigo-950' },
+      { title: 'FC 온라인 슈퍼매치 하이라이트', channel: 'FC 공식', views: '98,210', duration: '45:30', bg: 'from-emerald-950 to-green-950' },
+      { title: '던파 시로코 레이드 풀영상', channel: '던파TV', views: '76,543', duration: '1:22:45', bg: 'from-rose-950 to-red-950' },
+      { title: '카트라이더 드리프트 팁 모음', channel: '카트왕', views: '54,321', duration: '18:24', bg: 'from-sky-950 to-blue-950' },
+      { title: '블루 아카이브 총력전 가이드', channel: '블아연구소', views: '43,210', duration: '32:15', bg: 'from-fuchsia-950 to-purple-950' },
+      { title: '바람의나라 연 업데이트 요약', channel: '바람지기', views: '38,900', duration: '28:41', bg: 'from-yellow-950 to-amber-950' },
+      { title: '히트2 PvP 최강 빌드 분석', channel: '히트마스터', views: '31,205', duration: '52:10', bg: 'from-pink-950 to-rose-950' },
+      { title: '데이브 더 다이버 숨겨진 레시피', channel: '요리왕Dave', views: '27,800', duration: '15:33', bg: 'from-cyan-950 to-teal-950' },
+    ];
+    document.getElementById('vod-grid').innerHTML = vods.map(v => `
+      <a href="#" class="group">
+        <div class="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br ${v.bg} mb-2.5">
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+          <span class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm rounded px-1.5 py-0.5 text-[10px] font-medium text-white">${v.duration}</span>
+        </div>
+        <p class="text-sm font-semibold leading-snug lc2 text-on-surface group-hover:text-pc-800 transition-colors">${v.title}</p>
+        <p class="text-xs text-on-surface3 mt-1.5">${v.channel}  ·  조회수 ${v.views}회</p>
+      </a>`).join('');
+
+    /* ═══ Date Selector ═══ */
+    const dates = [
+      { day: 22, label: '오늘' }, { day: 23, label: '수' }, { day: 24, label: '목' },
+      { day: 25, label: '금' }, { day: 26, label: '토' }, { day: 27, label: '일' }, { day: 28, label: '월' },
+    ];
+    const dateEl = document.getElementById('date-selector');
+    dateEl.innerHTML = dates.map((d, i) => `
+      <button class="date-btn flex flex-col items-center gap-1 px-4 py-2.5 rounded-xl shrink-0 transition-all ${i === 0 ? 'bg-pc-800' : 'bg-surface-card hover:bg-surface-card-h'}" data-day="${d.day}">
+        <span class="text-[11px] ${i === 0 ? 'text-white' : 'text-on-surface3'}">${d.label}</span>
+        <span class="text-lg font-bold ${i === 0 ? 'text-white' : 'text-on-surface'}">${d.day}</span>
+      </button>`).join('');
+    dateEl.addEventListener('click', e => {
+      const btn = e.target.closest('.date-btn');
+      if (!btn) return;
+      dateEl.querySelectorAll('.date-btn').forEach(b => {
+        b.classList.remove('bg-pc-800'); b.classList.add('bg-surface-card');
+        b.children[0].classList.remove('text-white'); b.children[0].classList.add('text-on-surface3');
+        b.children[1].classList.remove('text-white'); b.children[1].classList.add('text-on-surface');
+      });
+      btn.classList.remove('bg-surface-card'); btn.classList.add('bg-pc-800');
+      btn.children[0].classList.remove('text-on-surface3'); btn.children[0].classList.add('text-white');
+      btn.children[1].classList.remove('text-on-surface'); btn.children[1].classList.add('text-white');
+    });
+
+    /* ═══ Schedule List ═══ */
+    const schedItems = [
+      { time: '14:00', title: '메이플스토리 월드 개발자 노트', game: '메이플스토리', status: 'live' },
+      { time: '16:00', title: 'FC 온라인 이적시장 분석', game: 'FC 온라인', status: 'upcoming' },
+      { time: '18:00', title: '던전앤파이터 시즌 퀘스트 공략', game: '던전앤파이터', status: 'upcoming' },
+      { time: '20:00', title: '카트라이더 드리프트 대회 생중계', game: '카트라이더: 드리프트', status: 'upcoming' },
+      { time: '22:00', title: '블루 아카이브 스페셜 OST 라이브', game: '블루 아카이브', status: 'upcoming' },
+    ];
+    document.getElementById('schedule-list').innerHTML = schedItems.map((item, i) => `
+      <div class="flex items-center justify-between px-4 py-4 rounded-lg ${i % 2 === 0 ? 'bg-surface-card' : ''} hover:bg-surface-card-h transition-colors">
+        <div class="flex items-center gap-5">
+          <span class="text-base font-bold w-[60px] shrink-0 ${item.status === 'live' ? 'text-nx-red' : 'text-on-surface3'}">${item.time}</span>
+          ${item.status === 'live' ? '<span class="bg-nx-red text-white text-[11px] font-bold px-2 py-0.5 rounded shrink-0">방송 중</span>' : ''}
+          <div>
+            <p class="text-[15px] font-semibold text-on-surface">${item.title}</p>
+            <p class="text-xs text-on-surface3 mt-0.5">${item.game}</p>
+          </div>
+        </div>
+        <button class="text-on-surface4 hover:text-pc-800 transition-colors shrink-0 ml-4">${bookmarkSvg}</button>
+      </div>`).join('');
+  </script>
+</body>
+</html>
