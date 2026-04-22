@@ -95,16 +95,17 @@
     .lc2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     /* Card List component (Nexon Basic 1.0v) */
-    .nx-card { border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+    .nx-card { border-radius: 4px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; border: 1px solid var(--divider); }
     .nx-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
     .nx-card .nx-card-img { aspect-ratio: 282/160; width: 100%; object-fit: cover; }
-    .nx-card .nx-card-container { padding: 12px 0 0; display: flex; flex-direction: column; gap: 10px; }
-    .nx-card .nx-card-content { display: flex; flex-direction: column; gap: 8px; }
+    .nx-card .nx-card-container { padding: 16px 0; display: flex; flex-direction: column; gap: 12px; }
+    .nx-card .nx-card-content { display: flex; flex-direction: column; gap: 16px; }
+    .nx-card .nx-card-text { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
     .nx-card .nx-card-title { font-size: 16px; font-weight: 600; line-height: 1.5; }
     .nx-card .nx-card-desc { font-size: 14px; line-height: 1.5; }
-    .nx-card .nx-card-badge { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+    .nx-card .nx-card-badge { display: flex; align-items: center; gap: 16px; font-size: 14px; padding: 0 16px; }
     .nx-card .nx-card-divider { height: 1px; width: 100%; }
-    .nx-card .nx-card-nickname { display: flex; align-items: center; gap: 8px; }
+    .nx-card .nx-card-nickname { display: flex; align-items: center; gap: 4px; padding: 0 16px; }
     .nx-card .nx-card-nickname img,
     .nx-card .nx-card-nickname .nx-avatar { width: 24px; height: 24px; border-radius: 50%; }
     .nx-card .nx-card-nickname span { font-size: 14px; }
@@ -322,9 +323,9 @@
           <div class="absolute top-2.5 left-2.5">${liveBadge(true)}</div>
           <div class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-sm rounded px-1.5 py-0.5 text-[10px] font-medium text-white">${s.viewers}명</div>
         </div>
-        <div class="nx-card-container px-3 pb-3">
+        <div class="nx-card-container">
           <div class="nx-card-content">
-            <div>
+            <div class="nx-card-text">
               <p class="nx-card-title lc2 text-on-surface group-hover:text-pc-800 transition-colors">${s.title}</p>
               <p class="nx-card-desc lc2 text-on-surface3 mt-1">${s.desc}</p>
             </div>
@@ -377,9 +378,9 @@
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
           <span class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm rounded px-1.5 py-0.5 text-[10px] font-medium text-white">${v.duration}</span>
         </div>
-        <div class="nx-card-container px-3 pb-3">
+        <div class="nx-card-container">
           <div class="nx-card-content">
-            <div>
+            <div class="nx-card-text">
               <p class="nx-card-title lc2 text-on-surface group-hover:text-pc-800 transition-colors">${v.title}</p>
               <p class="nx-card-desc lc2 text-on-surface3 mt-1">${v.desc}</p>
             </div>
